@@ -1,9 +1,22 @@
+import bcrypt from "bcrypt";
 import { userModel } from "../models/User";
 import { userDetailsTypes } from "./types";
 
+export async function encryptPassword(password: string) {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(password, saltRounds);
+  return hash;
+}
+
 export async function createUserController(userDetails: userDetailsTypes) {
   try {
-    const user = await userModel.create(userDetails);
+    const hashedPassword = await encryptPassword(userDetails.password);
+
+    const user = await userModel.create({
+      ...userDetails,
+      password: hashedPassword,
+    });
+
     return {
       success: true,
       data: user,
@@ -19,10 +32,3 @@ export async function createUserController(userDetails: userDetailsTypes) {
     };
   }
 }
-
-
-// export async function encryptPassword(password:string) {
-//     const saltRounds = 10;
-//     return 
-    
-// }
