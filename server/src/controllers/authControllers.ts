@@ -32,3 +32,10 @@ export async function createUserController(userDetails: userDetailsTypes) {
     };
   }
 }
+
+
+export function createJwt(userDetails:userDetailsTypes){
+
+  
+
+}
